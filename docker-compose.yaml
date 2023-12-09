@@ -1,0 +1,11 @@
+---
+version: '3.5'
+services:
+  go-reminder-bot:
+    image: go-reminder-bot:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: "go-reminder-bot"
+    ports:
+      - "2909:2909"
