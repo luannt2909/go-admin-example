@@ -24,7 +24,7 @@ const UserList = (props) => {
     const {permissions} = usePermissions()
     const isAdminRole = permissions == RoleAdmin
     return (
-        <List {...props} filters={userFilters} hasCreate={isAdminRole}>
+        <List {...props} filters={userFilters} hasCreate={isAdminRole} sort={{ field: 'id', order: 'DESC' }}>
             <Datagrid rowClick="show">
                 <TextField source='id'/>
                 <TextField source='username'/>

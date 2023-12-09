@@ -6,7 +6,7 @@ const UserEdit = (props) => {
     const {permissions} = usePermissions()
     return (
         <Edit title='Edit User' {...props}>
-            <SimpleForm>
+            <SimpleForm >
                 <TextInput disabled source='id'/>
                 <TextInput source='username' disabled fullWidth/>
                 <WithRecord render={record => {

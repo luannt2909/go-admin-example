@@ -12,7 +12,10 @@ import {
     useRecordContext
 } from 'react-admin'
 import {RoleAdmin} from "./roles";
-
+const UserTitle = () => {
+    const record = useRecordContext();
+    return <span>User {record ? `"${record.username}"` : ''}</span>;
+};
 const ShowActions = () => {
     const {permissions} = usePermissions()
     const record = useRecordContext()
@@ -26,7 +29,7 @@ const ShowActions = () => {
 }
 const UserShow = (props) => {
     return (
-        <Show {...props} actions={<ShowActions/>}>
+        <Show {...props} actions={<ShowActions/>} title={<UserTitle/>}>
             <SimpleShowLayout>
                 <TextField source='id'/>
                 <TextField source='username'/>

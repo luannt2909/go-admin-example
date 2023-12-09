@@ -6,6 +6,7 @@ import (
 	"go-admin/di"
 	"go-admin/server"
 	"go.uber.org/fx"
+	"os"
 )
 
 func Execute() error {
@@ -23,11 +24,15 @@ func serveStaticFile(g *gin.Engine) {
 
 func startAdminServer(lc fx.Lifecycle, router server.Router) {
 	g := gin.Default()
-	serveStaticFile(g)
+	//serveStaticFile(g)
 	router.Register(g)
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			go g.Run()
+			port := os.Getenv("PORT")
+			if port == "" {
+				port = "2303"
+			}
+			go g.Run(":" + port)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

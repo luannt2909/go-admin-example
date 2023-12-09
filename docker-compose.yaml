@@ -2,10 +2,10 @@
 version: '3.5'
 services:
   go-admin:
-    image: go-admin:latest
+    image: go-admin-example:latest
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: "go-admin"
+    container_name: "go-admin-example"
     ports:
-      - "8080:8080"
+      - "2303:2303"

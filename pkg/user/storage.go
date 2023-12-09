@@ -27,7 +27,7 @@ func NewUser(username string) User {
 			UpdatedAt: now,
 		},
 		Username: username,
-		Role:     enum.RoleGuest,
+		Role:     enum.RoleAdmin,
 		IsActive: true,
 	}
 }
