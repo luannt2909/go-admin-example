@@ -1,8 +1,9 @@
 import {AuthProvider} from "react-admin";
+import {API_HOST} from "./config";
 
 export const authProvider: AuthProvider = {
     login: ({username, password}) => {
-        const request = new Request(`${import.meta.env.VITE_SIMPLE_REST_URL}/auth/authenticate`, {
+        const request = new Request(`${API_HOST}/auth/authenticate`, {
             method: 'POST',
             body: JSON.stringify({username, password}),
             headers: new Headers({'Content-Type': 'application/json'}),

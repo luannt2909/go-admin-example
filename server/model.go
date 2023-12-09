@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"go-admin/pkg/enum"
 	"go-admin/pkg/user"
 	"time"
@@ -38,7 +37,6 @@ func (r GetListRequest) toGetListParams() user.GetListParams {
 			acceptFiltersParam[k] = v
 		}
 	}
-	fmt.Println("filters: ", acceptFiltersParam)
 	p := user.GetListParams{
 		Filter:   acceptFiltersParam,
 		Limit:    10,

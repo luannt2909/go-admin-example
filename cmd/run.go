@@ -24,7 +24,7 @@ func serveStaticFile(g *gin.Engine) {
 
 func startAdminServer(lc fx.Lifecycle, router server.Router) {
 	g := gin.Default()
-	//serveStaticFile(g)
+	serveStaticFile(g)
 	router.Register(g)
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
