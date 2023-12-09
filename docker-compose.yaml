@@ -1,11 +1,11 @@
 ---
 version: '3.5'
 services:
-  go-reminder-bot:
-    image: go-reminder-bot:latest
+  go-admin:
+    image: go-admin:latest
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: "go-reminder-bot"
+    container_name: "go-admin"
     ports:
-      - "2909:2909"
+      - "8080:8080"

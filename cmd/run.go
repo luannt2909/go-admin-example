@@ -2,43 +2,35 @@ package cmd
 
 import (
 	"context"
-	"go-reminder-bot/admin/server"
-	"go-reminder-bot/cron"
-	"go-reminder-bot/di"
+	"github.com/gin-gonic/gin"
+	"go-admin/di"
+	"go-admin/server"
 	"go.uber.org/fx"
 )
 
 func Execute() error {
 	app := fx.New(
 		di.Module,
-		fx.Invoke(startCronJob),
 		fx.Invoke(startAdminServer),
 	)
 	app.Run()
 	return nil
 }
 
-func startCronJob(lc fx.Lifecycle, job cron.UserReminderJob) {
-	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
-			job.Start(ctx)
-			return nil
-		},
-		OnStop: func(ctx context.Context) error {
-			job.Stop(ctx)
-			return nil
-		},
-	})
+func serveStaticFile(g *gin.Engine) {
+	g.Static("/admin", "./webs/dist")
 }
 
-func startAdminServer(lc fx.Lifecycle, server server.Server) {
+func startAdminServer(lc fx.Lifecycle, router server.Router) {
+	g := gin.Default()
+	serveStaticFile(g)
+	router.Register(g)
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			go server.Start(ctx)
+			go g.Run()
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			server.Stop(ctx)
 			return nil
 		},
 	})

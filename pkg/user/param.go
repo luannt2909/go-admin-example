@@ -1,7 +1,7 @@
 package user
 
-import "go-reminder-bot/pkg/util"
-
 type GetListParams struct {
-	util.GetListParams
+	Filter           map[string]interface{}
+	Limit, Offset    int
+	SortBy, SortType string
 }

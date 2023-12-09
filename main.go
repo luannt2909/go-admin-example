@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-reminder-bot/cmd"
+	"go-admin/cmd"
 )
 
 func main() {

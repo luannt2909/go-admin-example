@@ -3,18 +3,15 @@ package db
 import (
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
-	"go-reminder-bot/pkg/config"
-	"go-reminder-bot/pkg/enum"
-	"go-reminder-bot/pkg/reminder"
-	"go-reminder-bot/pkg/user"
-	"gorm.io/driver/mysql"
+	"go-admin/pkg/enum"
+	"go-admin/pkg/user"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"os"
 	"time"
 )
 
-const dbFileName = "./tmp/go-reminder-bot.db"
+const dbFileName = "./tmp/go-admin.db"
 
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
@@ -40,66 +37,34 @@ func InitSQLiteDB() (*gorm.DB, error) {
 		return nil, err
 	}
 	if !isExistedDB {
-		_ = db.AutoMigrate(&reminder.Reminder{}, &user.User{})
-		adminEmail := "admin@reminderbot.com"
-		adminPwd := os.Getenv("DEFAULT_ADMIN_PASSWORD")
-		if adminPwd == "" {
-			adminPwd = "reminderbot"
-		}
+		_ = db.AutoMigrate(&user.User{})
 		db.Create(&user.User{
 			Model: gorm.Model{
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			},
-			Email:    adminEmail,
-			Password: adminPwd,
+			Username: "admin",
 			Role:     enum.RoleAdmin,
 			IsActive: true,
 		})
-		adminReminder := reminder.DefaultReminder
-		adminReminder.CreatedBy = adminEmail
-		db.Create(&adminReminder)
-
-		guestEmail := "guest@reminderbot.com"
-		guestPwd := os.Getenv("DEFAULT_GUEST_PASSWORD")
-		if guestPwd == "" {
-			guestPwd = "reminderbot"
-		}
 		db.Create(&user.User{
 			Model: gorm.Model{
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			},
-			Email:    guestEmail,
-			Password: guestPwd,
+			Username: "guest",
 			Role:     enum.RoleGuest,
 			IsActive: true,
 		})
-		guestReminder := reminder.DefaultReminder
-		guestReminder.CreatedBy = guestEmail
-		db.Create(&guestReminder)
 	}
 	return db, nil
 }
 
-func InitDatabase(cfg config.DBConfig) (db *gorm.DB, err error) {
-	db, err = initDB(cfg)
+func InitDatabase() (db *gorm.DB, err error) {
+	db, err = InitSQLiteDB()
 	if err != nil {
 		return
 	}
-	err = db.AutoMigrate(&user.User{}, &reminder.Reminder{})
+	err = db.AutoMigrate(&user.User{})
 	return
-}
-
-func initDB(cfg config.DBConfig) (db *gorm.DB, err error) {
-	switch cfg.DBClient {
-	case "mysql":
-		db, err = gorm.Open(mysql.Open(cfg.DBConnectionURI), &gorm.Config{})
-		if err != nil {
-			return
-		}
-		return
-	default:
-		return InitSQLiteDB()
-	}
 }
