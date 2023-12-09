@@ -4,7 +4,7 @@ import GithubIcon from '@mui/icons-material/GitHub';
 
 const ContributeButton = () => (
     <Tooltip title="Github">
-        <IconButton color="inherit" href="https://github.com/luannt2909/go-admin">
+        <IconButton color="inherit" href="https://github.com/luannt2909/go-admin-example">
             <GithubIcon/>
         </IconButton>
     </Tooltip>
